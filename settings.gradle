@@ -1,0 +1,5 @@
+rootProject.name = 'SkillHunt-app'
+
+include 'model'
+include 'app'
+

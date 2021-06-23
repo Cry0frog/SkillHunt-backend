@@ -1,0 +1,44 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/skill_hunt
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/skill_hunt
+    username: postgres
+    password: 1234
+  liquibase:
+    change-log: classpath:db/liquibase/db.changelog-master.xml
+    drop-first: false
+  servlet:
+    multipart:
+      max-file-size: 100MB
+      max-request-size: 100MB
+  jpa:
+    show-sql: true
+
+  main:
+    allow-bean-definition-overriding: true
+
+  mail:
+    host: smtp.yandex.ru
+    username: nik.shvedov.2018@yandex.ru
+    password: KolyaNicH2018zxcv36Asdfg
+    port: 465
+    protocol: smtps
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+
+java:
+  util:
+    logging:
+      FileHandler.pattern: classpath:MyApplication_%u-%g.log
+
+saveFilePath : uploads

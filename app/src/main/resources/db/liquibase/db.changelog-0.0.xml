@@ -1,0 +1,148 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet author="nikolay" id="30.03.2021-1">
+        <createSequence dataType="BIGINT"
+                        incrementBy="1"
+                        minValue="1"
+                        schemaName="public"
+                        sequenceName="hibernate_sequence"
+                        startValue="1"/>
+
+        <createTable tableName="properties">
+            <column name="name" type="VARCHAR(255)">
+                <constraints primaryKey="true" primaryKeyName="property_pk"/>
+            </column>
+            <column name="value" type="TEXT"/>
+        </createTable>
+        <createTable tableName="users">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="user_pk"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="enabled" type="BOOLEAN"/>
+            <column name="status" type="VARCHAR(255)"/>
+
+            <column name="password_id" type="BIGINT">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+        <createTable tableName="passwords">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="password_pk"/>
+            </column>
+            <column name="password" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="user_roles">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="user_role_pk"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="role" type="VARCHAR(255)"/>
+            <column name="user_id" type="BIGINT">
+                <constraints unique="true"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="user_roles"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="users"
+                                 constraintName="fk_users__user_roles"
+        />
+    </changeSet>
+
+
+    <changeSet author="nikolay" id="10.04.2021-2">
+        <createTable tableName="support_request">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="support_message_pk"/>
+            </column>
+            <column name="username" type="VARCHAR(255)"/>
+            <column name="phone" type="VARCHAR(255)"/>
+            <column name="message" type="TEXT"/>
+            <column name="date" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="nikolay" id="20.04.2021-3">
+        <createTable tableName="direction">
+        <column name="id" type="serial">
+            <constraints primaryKey="true" primaryKeyName="direction_pk"/>
+        </column>
+        <column name="direction_name" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="fieldArea">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="fieldArea_pk"/>
+            </column>
+            <column name="field_area" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="company">
+            <column name="id" type="serial">direction
+                <constraints primaryKey="true" primaryKeyName="company_pk"/>
+            </column>
+            <column name="company_name" type="VARCHAR(255)"/>
+        </createTable>
+        <createTable tableName="courses">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="courses_pk"/>
+            </column>
+            <column name="name" type="VARCHAR(255)"/>
+            <column name="link" type="VARCHAR(255)"/>
+            <column name="description" type="TEXT"/>
+            <column name="image_filename" type="VARCHAR(255)"/>
+            <column name="publish" type="boolean"/>
+            <column name="direction_id" type="bigint"/>
+            <column name="field_area_id" type="bigint"/>
+            <column name="company_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="direction_id"
+                                 baseTableName="courses"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direction"
+                                 constraintName="fk_direction_courses"
+        />
+        <addForeignKeyConstraint baseColumnNames="field_area_id"
+                                 baseTableName="courses"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="fieldArea"
+                                 constraintName="fk_fieldArea_courses"
+        />
+        <addForeignKeyConstraint baseColumnNames="company_id"
+                                 baseTableName="courses"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company"
+                                 constraintName="fk_company_courses"
+        />
+
+    </changeSet>
+
+    <changeSet author="nikolay" id="15.05.2021-4">
+        <createTable tableName="review">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="review_pk"/>
+            </column>
+            <column name="rating" type="INTEGER"/>
+            <column name="comment" type="VARCHAR(255)"/>
+            <column name="course_id" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseColumnNames="course_id"
+                                 baseTableName="review"
+                                 onDelete="CASCADE"
+                                 onUpdate="RESTRICT"
+                                 referencedColumnNames="id"
+                                 referencedTableName="courses"
+                                 constraintName="fk_courses_review"
+        />
+    </changeSet>
+
+</databaseChangeLog>
+
